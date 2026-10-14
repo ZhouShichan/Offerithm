@@ -1,0 +1,37 @@
+{
+  "name": "offerithm",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Offerithm（薪筹）—— 算清薪酬，筹划前程。面向中国大陆应届生及求职者的综合薪酬分析与多 Offer 决策工具。",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint .",
+    "typecheck": "tsc -b --noEmit"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.26.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.12.0",
+    "@tailwindcss/vite": "^4.1.0",
+    "@types/node": "^22.20.5",
+    "@types/react": "^18.3.11",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.2",
+    "eslint": "^9.12.0",
+    "eslint-plugin-react-hooks": "^5.0.0",
+    "globals": "^15.11.0",
+    "tailwindcss": "^4.1.0",
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.8.0",
+    "vite": "^5.4.8",
+    "vitest": "^2.1.2"
+  }
+}
