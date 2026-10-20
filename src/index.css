@@ -1,9 +1,50 @@
 @import "tailwindcss";
 
+/*
+ * cafe 设计体系 token（issue #7 决议，单一来源，不并用 DESIGN.md 备选色板）。
+ * 视觉验收基线：docs/research/quick-estimate-prototype.html（分支 research/quick-estimate-prototype）。
+ * 按 Tailwind v4 @theme 规范命名，生成 bg-surface / text-muted / rounded-lg / font-display 等工具类。
+ */
+@theme {
+  /* 底色与面板 */
+  --color-bg: #fbf6ee;
+  --color-surface: #fffdf8;
+  --color-surface-warm: #f1e3cf;
+  /* 文字层级 */
+  --color-fg: #201914;
+  --color-fg-2: #4c4037;
+  --color-muted: #7a6d63;
+  --color-meta: #9b5b32;
+  /* 边框 */
+  --color-border: #ded2c3;
+  --color-border-soft: #eee4d7;
+  /* 强调（焦糖棕）与语义色 */
+  --color-accent: #9b5b32;
+  --color-accent-on: #ffffff;
+  --color-success: #4f8a4f;
+  --color-warn: #c9822f;
+  --color-danger: #b33a3a;
+  /* 圆角 */
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  /* 字体：本地字体栈，不引入 webfont（issue #7 决议） */
+  --font-display: Georgia, "Times New Roman", serif;
+  --font-body: Inter, system-ui, sans-serif;
+  /* 阴影 */
+  --shadow-raised: 0 20px 52px rgba(32, 25, 20, 0.12);
+  --shadow-focus-ring: 0 0 0 4px rgba(155, 91, 50, 0.24);
+}
+
 :root {
-  color-scheme: light dark;
+  color-scheme: light;
 }
 
 body {
-  @apply bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-slate-100 antialiased;
+  background-color: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-body);
+  /* 原型 --leading-body: 1.62 */
+  line-height: 1.62;
+  -webkit-font-smoothing: antialiased;
 }
