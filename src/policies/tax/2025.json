@@ -1,0 +1,16 @@
+{
+  "year": 2025,
+  "annualBrackets": [
+    { "upTo": 36000, "rate": 0.03, "quickDeduction": 0 },
+    { "upTo": 144000, "rate": 0.1, "quickDeduction": 210 },
+    { "upTo": 300000, "rate": 0.2, "quickDeduction": 1410 },
+    { "upTo": 420000, "rate": 0.25, "quickDeduction": 2660 },
+    { "upTo": 660000, "rate": 0.3, "quickDeduction": 4410 },
+    { "upTo": 960000, "rate": 0.35, "quickDeduction": 7160 },
+    { "upTo": null, "rate": 0.45, "quickDeduction": 15160 }
+  ],
+  "basicDeductionMonthly": 5000,
+  "rentDeductionTiers": { "majorCity": 1500, "largeCity": 1100, "other": 800 },
+  "source": "《中华人民共和国个人所得税法》（2018 修正：税率表一、第六条基本减除 60000 元/年） https://fgk.chinatax.gov.cn/zcfgk/c100009/c5193028/content.html ；国家税务总局公告2018年第56号（按月换算后的综合所得税率表：速算扣除数 0/210/1410/2660/4410/7160/15160） https://fgk.chinatax.gov.cn/zcfgk/c100012/c5194836/content.html ；国发〔2018〕41号第十七条（住房租金三档 1500/1100/800） https://fgk.chinatax.gov.cn/zcfgk/c102440/c5209858/content.html ；国发〔2023〕13号（2023 年起仅三项扣除标准提高，租金三档未调整） https://fgk.chinatax.gov.cn/zcfgk/c102440/c5213594/content.html ；财政部 税务总局公告2023年第30号（年终奖单独计税延续至 2027-12-31） https://fgk.chinatax.gov.cn/zcfgk/c102416/c5211524/content.html ；国家税务总局上海市税务局 2026-03 问答（租金扣除仍按三档执行） https://shanghai.chinatax.gov.cn/zcfw/rdwd/202603/t479656.html",
+  "note": "年终奖(Annual Bonus)单独计税(Separate Taxation)政策效期至 2027-12-31（财政部 税务总局公告2023年30号）。速算扣除数(Quick Deduction)按 56 号公告「按月换算后的综合所得税率表」转录（0/210/1410/2660/4410/7160/15160），级距为年度值（=月度级距×12：3000×12=36000 … 80000×12=960000）；年度综合所得汇算的速算扣除数为该表值×12（0/2520/16920/31920/52920/85920/181920），引擎按用途取对应口径。"
+}
