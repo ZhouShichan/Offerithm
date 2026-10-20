@@ -1,0 +1,52 @@
+{
+  "id": "beijing-2025",
+  "region": "北京市",
+  "year": 2025,
+  "effectiveFrom": "2025-07-01",
+  "effectiveTo": "2026-06-30",
+  "scope": "region",
+  "baseFloor": 7162,
+  "baseCeiling": 35811,
+  "hfBaseFloor": 2540,
+  "hfBaseCeiling": 35811,
+  "rates": {
+    "pension": {
+      "employee": 0.08,
+      "employer": 0.16,
+      "personalAccount": true,
+      "note": "国家统一口径：单位 16%（国办发〔2019〕13号）、个人 8% 全部划入个人账户（国发〔2005〕38号）。"
+    },
+    "medical": {
+      "employee": 0.02,
+      "employer": 0.098,
+      "personalAccount": true,
+      "note": "单位 9.8% 含生育保险；个人 2% 另缴大额医疗互助 3 元/月（固定金额，不在费率内，《北京市基本医疗保险规定》第 38 条）；大额互助单位 1% 是否含于 9.8% 未见官方明示（调研报告未核实清单第 9 项）。"
+    },
+    "unemployment": {
+      "employee": 0.005,
+      "employer": 0.005,
+      "personalAccount": false,
+      "note": "单位/个人各 0.5%（北京人社局 2021 口径 + 人社部发〔2024〕40号，延续至 2025-12-31）。"
+    },
+    "injury": {
+      "employee": 0,
+      "employer": 0.002,
+      "personalAccount": false,
+      "note": "仅企业缴纳；行业基准一至八类 0.2%–1.9% 浮动（人社部发〔2015〕71号），本文件取一类基准 0.2%。"
+    },
+    "maternity": {
+      "employee": 0,
+      "employer": 0,
+      "personalAccount": false,
+      "note": "已并入职工基本医疗保险统一征缴（国办发〔2019〕10号）：费率含于医疗单位 9.8% 内，此处不重复计缴；个人不缴。"
+    },
+    "housingFund": {
+      "employee": 0.12,
+      "employer": 0.12,
+      "personalAccount": true,
+      "note": "比例 5%–12% 单位自选，默认取 12%；2025 年度下限 2540 自 2025-09-01 起执行。"
+    }
+  },
+  "source": "京人社发〔2025〕11号（2025 社保年度基数 7162/35811） https://rsj.beijing.gov.cn/xxgk/2024zcwj/202509/t20250918_4204880.html ；北京 2024 全口径平均工资 11937 元/月（7162=11937×60%、35811=11937×300%） https://rsj.beijing.gov.cn/bm/ywml/202007/t20200717_1950961.html ；北京公积金 2025 年度通知（基数 2540/35811、比例 5%–12%） https://gjj.beijing.gov.cn/web/zwgk61/2024zcjd/743765478/index.html ；国办发〔2019〕13号（养老单位 16%） https://www.gov.cn/zhengce/content/2019-04/04/content_5379629.htm ；国发〔2005〕38号（养老个人 8%） https://fgk.chinatax.gov.cn/zcfgk/c102440/c5193739/content.html ；北京市医保局在线咨询（单位 9.8% 含生育、个人 2%） https://www.beijing.gov.cn/hudong/yonghu/static/ybj/zixun/detail.html?searchCode=sybj16582829611321131982 ；《北京市基本医疗保险规定》第 38 条（大额互助个人 3 元/月） http://www.bjchy.gov.cn/affair/zfyj/law/16841099.htm ；北京人社局 2021 失业费率口径 https://rsj.beijing.gov.cn/xwsl/mtgz/202104/t20210425_2368718.html ；人社部发〔2024〕40号（失业延续至 2025-12-31） https://guangdong.chinatax.gov.cn/gdsw/zjfg/2024-05/07/content_4c9a7d240b304cd188fbc02c1b0e0599.shtml ；人社部发〔2015〕71号（工伤基准） https://www.ndrc.gov.cn/xwdt/ztzl/gbmjcbzc/rsb/201801/t20180119_1209143.html ；国办发〔2019〕10号（生育并入医保） https://www.nhsa.gov.cn/art/2019/3/25/art_104_6448.html",
+  "note": "2025 社保年度（2025-07-01～2026-06-30）。社保基数上下限适用于养老/失业/工伤/医疗（含生育）；公积金为 2025 住房公积金年度（2025-07～2026-06，下限 2540 自 2025-09-01 起执行），两体系同起止，无需字段级切换。"
+}

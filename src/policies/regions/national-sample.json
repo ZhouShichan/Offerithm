@@ -1,0 +1,52 @@
+{
+  "id": "national-sample",
+  "region": "全国",
+  "year": 2025,
+  "effectiveFrom": "2025-01-01",
+  "effectiveTo": "2027-12-31",
+  "scope": "national-sample",
+  "baseFloor": 7162,
+  "baseCeiling": 35811,
+  "hfBaseFloor": 7162,
+  "hfBaseCeiling": 35811,
+  "rates": {
+    "pension": {
+      "employee": 0.08,
+      "employer": 0.16,
+      "personalAccount": true,
+      "note": "全国统一口径：单位 16%（国办发〔2019〕13号）、个人 8% 全部划入个人账户（国发〔2005〕38号）。"
+    },
+    "medical": {
+      "employee": 0.02,
+      "employer": 0.06,
+      "personalAccount": true,
+      "note": "基准口径（国发〔1998〕44号）：单位约 6%、个人 2%；各地实际单位费率在 4.5%–9.9% 区间浮动。"
+    },
+    "unemployment": {
+      "employee": 0.005,
+      "employer": 0.005,
+      "personalAccount": false,
+      "note": "总费率 1%（人社部发〔2023〕19号；人社部发〔2024〕40号延续至 2025-12-31）；单位/个人划分各省不同（0.5+0.5、0.8+0.2、0.6+0.4 等），样例默认 0.5+0.5；2026 年度延续文件未见（调研报告未核实清单第 8 项）。"
+    },
+    "injury": {
+      "employee": 0,
+      "employer": 0.002,
+      "personalAccount": false,
+      "note": "仅企业缴纳；行业基准一至八类 0.2%–1.9%（人社部发〔2015〕71号），样例取一类基准 0.2%。"
+    },
+    "maternity": {
+      "employee": 0,
+      "employer": 0,
+      "personalAccount": false,
+      "note": "已并入职工基本医疗保险统一征缴（国办发〔2019〕10号）：单位费率计入医疗、个人不缴，此处不重复计缴。"
+    },
+    "housingFund": {
+      "employee": 0.12,
+      "employer": 0.12,
+      "personalAccount": true,
+      "note": "缴存比例下限 5%（条例第十八条），常见执行上限 12%（2026 条例修订后上限表述变化），样例默认 12%。"
+    }
+  },
+  "source": "国办发〔2019〕13号（养老单位 16%、基数按全口径平均工资 60%–300%） https://www.gov.cn/zhengce/content/2019-04/04/content_5379629.htm ；国发〔2005〕38号（养老个人 8%） https://fgk.chinatax.gov.cn/zcfgk/c102440/c5193739/content.html ；国发〔1998〕44号（医疗基准约 6%/2%） https://www.nhsa.gov.cn/art/1998/12/14/art_37_1189.html ；人社部发〔2023〕19号（失业总费率 1%） https://fgk.chinatax.gov.cn/zcfgk/c100013/c5206775/content.html ；人社部发〔2024〕40号（延续至 2025-12-31） https://guangdong.chinatax.gov.cn/gdsw/zjfg/2024-05/07/content_4c9a7d240b304cd188fbc02c1b0e0599.shtml ；人社部发〔2015〕71号（工伤基准 0.2%–1.9%） https://www.ndrc.gov.cn/xwdt/ztzl/gbmjcbzc/rsb/201801/t20180119_1209143.html ；国办发〔2019〕10号（生育并入医保） https://www.nhsa.gov.cn/art/2019/3/25/art_104_6448.html ；《住房公积金管理条例》第十八条（比例下限 5%） https://www.shanghai.gov.cn/nw4544/20200905/0001-4544_301.html ；国务院令第 844 号（2026 修订，上限表述变化） https://www.mee.gov.cn/zcwj/gwywj/202608/t20260820_1164286.shtml ；北京 2024 全口径平均工资 11937 元/月（样例基数折算锚点） https://rsj.beijing.gov.cn/bm/ywml/202007/t20200717_1950961.html",
+  "note": "全国通用样例(National Sample)（回退配置）：非官方权威口径，仅用于未覆盖城市的粗估，计算结果须整体标注低置信度（policy-missing-fallback）。全国无统一缴费基数：上下限按国办发〔2019〕13号「全口径平均工资 60%–300%」口径，以调研报告唯一 ✅ 全口径平均工资锚点（北京 2024：11937 元/月）折算（11937×60%=7162.2 取 7162；11937×300%=35811），属系统估算(System Estimate)；公积金基数无全国统一值，样例沿用同一区间占位。"
+}
