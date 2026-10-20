@@ -146,11 +146,18 @@ export interface InsuranceRate {
   personalAccount: boolean;
 }
 
-/** 地区政策：按「地区 + 年度」组织的法定参数；scope 显式区分真实城市政策与全国样例。 */
+/** 地区政策：按「地区 + 政策适用期」组织的法定参数；scope 显式区分真实城市政策与全国样例。 */
 export interface RegionPolicy {
   id: string;
   region: string;
+  /** 标称年度（如 2025 = 2025 社保年度）；精确适用期见 effectiveFrom/To */
   year: number;
+  /**
+   * 政策适用期（ISO 日期，含两端）。文件粒度 = 城市 × 政策期；
+   * 同城社保年度与公积金年度错期时按主导体系建文件，字段级差异写 note（#10 决议）。
+   */
+  effectiveFrom: string;
+  effectiveTo: string;
   /** region = 可核实的城市/省政策；national-sample = 全国通用样例，不得伪装为城市政策 */
   scope: "region" | "national-sample";
   /** 社保缴费基数上下限（元/月） */
