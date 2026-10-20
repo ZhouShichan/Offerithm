@@ -1,0 +1,52 @@
+{
+  "id": "guangzhou-2025",
+  "region": "广州市",
+  "year": 2025,
+  "effectiveFrom": "2025-07-01",
+  "effectiveTo": "2026-06-30",
+  "scope": "region",
+  "baseFloor": 5510,
+  "baseCeiling": 27549,
+  "hfBaseFloor": 2500,
+  "hfBaseCeiling": 39828,
+  "rates": {
+    "pension": {
+      "employee": 0.08,
+      "employer": 0.16,
+      "personalAccount": true,
+      "note": "国家统一口径：单位 16%（国办发〔2019〕13号）、个人 8% 全部划入个人账户（国发〔2005〕38号）。"
+    },
+    "medical": {
+      "employee": 0.02,
+      "employer": 0.0685,
+      "personalAccount": true,
+      "note": "单位 6.85% = 基本医疗 6% + 生育 0.85%（穗医保规字〔2022〕1号基准，有效期至 2026-12-31）；2024-03-01～2025-12-31 曾阶段性降为 4.5%+0.85%=5.35%，2026-01-01 起恢复 6%。医保基数按自然年（2025 年度下限 6236、上限 31179），与文件主导的社保年度（养老 2025-07 起）不同期。"
+    },
+    "unemployment": {
+      "employee": 0.002,
+      "employer": 0.008,
+      "personalAccount": false,
+      "note": "单位 0.8%、个人 0.2%（粤人社函〔2023〕133号，延续至 2025-12-31；2026 年度延续文件未见，沿用原划分）。"
+    },
+    "injury": {
+      "employee": 0,
+      "employer": 0.002,
+      "personalAccount": false,
+      "note": "仅企业缴纳；行业基准一至八类 0.2%–1.9% 浮动（人社部发〔2015〕71号），本文件取一类基准 0.2%。"
+    },
+    "maternity": {
+      "employee": 0,
+      "employer": 0,
+      "personalAccount": false,
+      "note": "生育 0.85% 已并入医疗单位费率 6.85% 内（穗医保规字〔2022〕1号体系），此处不重复计缴；个人不缴。"
+    },
+    "housingFund": {
+      "employee": 0.12,
+      "employer": 0.12,
+      "personalAccount": true,
+      "note": "比例 5%–12%（取整数）默认 12%；基数下限 2500（最低工资）、上限 39828（2024 年职工月平均工资 3 倍），2025-07-01～2026-06-30。"
+    }
+  },
+  "source": "粤人社发〔2025〕32号（养老/失业/工伤基数下限 5510、上限 27549） https://www.gz.gov.cn/zwfw/zxfw/sbfw/content/post_10510453.html ；广东税务局转载（同文号） https://guangdong.chinatax.gov.cn/gdsw/ssfggds/2025-10/27/content_ba2a20bf040648e089f9edf9f557fa2b.shtml ；2025 年度职工基本医疗保险（含生育）缴费基数通知（6236/31179，自然年） https://www.gz.gov.cn/gzybj/gkmlpt/content/11/11029/post_11029015.html ；穗医保规字〔2022〕1号（医疗 6%+生育 0.85% 基准费率） https://www.gz.gov.cn/gfxwj/sbmgfxwj/gzsylbzj/content/post_8689834.html ；阶段性降低职工医保缴费率解读（2025 自然年 4.5%+0.85%，2026-01-01 起恢复 6%） https://www.gz.gov.cn/gzzcwjk/gzdata/content/post_9513534.html ；失业费率（深圳人社问答引粤人社函〔2023〕133号：0.8%+0.2%） https://hrss.sz.gov.cn/zmhd/cjwt/cjwt/shbz/content/post_11386203.html ；粤人社规〔2024〕16号延续解读 http://www.heshan.gov.cn/ghb/zswd/content/post_3309499.html ；2025 年度广州住房公积金缴存调整（基数 2500/39828、比例 5%–12%） http://gjj.gz.gov.cn/gg/tzgg/content/post_10338393.html ；国办发〔2019〕13号（养老单位 16%） https://www.gov.cn/zhengce/content/2019-04/04/content_5379629.htm ；国发〔2005〕38号（养老个人 8%） https://fgk.chinatax.gov.cn/zcfgk/c102440/c5193739/content.html ；人社部发〔2015〕71号（工伤基准） https://www.ndrc.gov.cn/xwdt/ztzl/gbmjcbzc/rsb/201801/t20180119_1209143.html",
+  "note": "主导体系＝社保年度（养老/失业/工伤基数 2025-07-01 起，公积金同周期）；医保按自然年（2025 年度基数 6236/31179、费率年度差异）为字段级适用期差异，详见 medical 条目 note，引擎不做字段级日期切换（MVP 精度边界）。"
+}
