@@ -170,7 +170,11 @@ export interface RegionPolicy {
 /** 个税政策：年度汇算口径。租金三档预填值的政策数据落点由「政策数据规格」票决定。 */
 export interface TaxPolicy {
   year: number;
-  /** 综合所得年度税率表（7 级超额累进） */
+  /**
+   * 综合所得年度税率表（7 级超额累进）。⚠ 口径警示（IMP-03 决议）：
+   * quickDeduction 存的是 56 号公告**按月换算表值**（0/210/…/15160）——
+   * 年度综合所得汇算必须取 ×12（0/2520/…/181920）；年终奖单独计税直接用存值。
+   */
   annualBrackets: Array<{
     upTo: number | null;
     rate: number;
