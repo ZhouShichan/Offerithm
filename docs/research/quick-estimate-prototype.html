@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Offerithm 薪筹 · 快速估算原型（PRD-M01）</title>
+    <!--
+  决策工件：wayfinder #7「原型：快速估算界面」
+  视觉基线 = cafe 设计体系 56 token（https://open-design.ai/zh/plugins/design-system-cafe/）
+  本文件为静态原型：数值为示意，不接引擎；实现票以此为视觉验收参照。
+-->
+    <style>
+      :root {
+        /* cafe tokens */
+        --bg: #fbf6ee;
+        --surface: #fffdf8;
+        --surface-warm: #f1e3cf;
+        --fg: #201914;
+        --fg-2: #4c4037;
+        --muted: #7a6d63;
+        --meta: #9b5b32;
+        --border: #ded2c3;
+        --border-soft: #eee4d7;
+        --accent: #9b5b32;
+        --accent-on: #ffffff;
+        --success: #4f8a4f;
+        --warn: #c9822f;
+        --danger: #b33a3a;
+        --font-display: Georgia, "Times New Roman", serif;
+        --font-body: Inter, system-ui, sans-serif;
+        --text-sm: 14px;
+        --text-base: 17px;
+        --text-lg: 20px;
+        --text-xl: 28px;
+        --leading-body: 1.62;
+        --r-sm: 10px;
+        --r-md: 16px;
+        --r-lg: 24px;
+        --r-pill: 9999px;
+        --raised: 0 20px 52px rgba(32, 25, 20, 0.12);
+        --focus-ring: 0 0 0 4px rgba(155, 91, 50, 0.24);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--fg);
+        font-family: var(--font-body);
+        font-size: var(--text-base);
+        line-height: var(--leading-body);
+      }
+      .container {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 0 16px;
+      }
+      @media (min-width: 768px) {
+        .container {
+          padding: 0 24px;
+        }
+      }
+      header {
+        padding: 24px 0 8px;
+      }
+      .brand {
+        font-family: var(--font-display);
+        font-size: var(--text-xl);
+        letter-spacing: -0.025em;
+      }
+      .brand small {
+        font-size: var(--text-sm);
+        color: var(--muted);
+        font-family: var(--font-body);
+        margin-left: 8px;
+      }
+      main {
+        display: grid;
+        gap: 24px;
+        padding: 16px 0 56px;
+      }
+      @media (min-width: 900px) {
+        main {
+          grid-template-columns: 5fr 4fr;
+          align-items: start;
+        }
+      }
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--r-lg);
+        padding: 24px;
+        box-shadow: var(--raised);
+      }
+      .card h2 {
+        font-family: var(--font-display);
+        font-size: var(--text-lg);
+        margin: 0 0 16px;
+      }
+      label {
+        display: block;
+        font-size: var(--text-sm);
+        color: var(--fg-2);
+        margin: 16px 0 6px;
+      }
+      select,
+      input {
+        width: 100%;
+        padding: 10px 12px;
+        font: inherit;
+        color: var(--fg);
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--r-sm);
+      }
+      select:focus-visible,
+      input:focus-visible {
+        outline: none;
+        box-shadow: var(--focus-ring);
+      }
+      .segmented {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .segmented button {
+        flex: 1;
+        min-width: 88px;
+        padding: 8px 12px;
+        font: inherit;
+        font-size: var(--text-sm);
+        border: 1px solid var(--border);
+        border-radius: var(--r-pill);
+        background: var(--surface);
+        color: var(--fg-2);
+        cursor: pointer;
+        transition: all 150ms cubic-bezier(0.2, 0, 0, 1);
+      }
+      .segmented button[aria-pressed="true"] {
+        background: var(--accent);
+        color: var(--accent-on);
+        border-color: var(--accent);
+      }
+      .hint {
+        font-size: var(--text-sm);
+        color: var(--muted);
+        margin-top: 6px;
+      }
+      .row {
+        display: flex;
+        gap: 12px;
+      }
+      .row > * {
+        flex: 1;
+      }
+      .results {
+        display: grid;
+        gap: 12px;
+      }
+      .metric {
+        background: var(--surface-warm);
+        border-radius: var(--r-md);
+        padding: 16px;
+      }
+      .metric .label {
+        font-size: var(--text-sm);
+        color: var(--fg-2);
+      }
+      .metric .value {
+        font-family: var(--font-display);
+        font-size: var(--text-xl);
+        letter-spacing: -0.025em;
+      }
+      .metric .note {
+        font-size: var(--text-sm);
+        color: var(--meta);
+      }
+      .tag {
+        display: inline-block;
+        font-size: 12px;
+        padding: 1px 10px;
+        border-radius: var(--r-pill);
+        border: 1px solid var(--border);
+        color: var(--muted);
+        margin-left: 8px;
+        vertical-align: middle;
+      }
+      .tag.policy-default {
+        color: var(--meta);
+        border-color: var(--meta);
+      }
+      .tag.system-estimate {
+        color: var(--warn);
+        border-color: var(--warn);
+      }
+      .warnbox {
+        border: 1px solid var(--warn);
+        color: var(--warn);
+        border-radius: var(--r-md);
+        padding: 10px 14px;
+        font-size: var(--text-sm);
+        background: var(--surface);
+      }
+      .assump li {
+        margin: 6px 0;
+        font-size: var(--text-sm);
+        color: var(--fg-2);
+      }
+      .primary {
+        width: 100%;
+        margin-top: 20px;
+        padding: 12px;
+        font: inherit;
+        background: var(--accent);
+        color: var(--accent-on);
+        border: none;
+        border-radius: var(--r-md);
+        cursor: pointer;
+        box-shadow: var(--raised);
+        transition: all 150ms cubic-bezier(0.2, 0, 0, 1);
+      }
+      .primary:hover {
+        background: color-mix(in oklab, var(--accent), black 8%);
+      }
+      footer {
+        padding: 16px 0 48px;
+        font-size: var(--text-sm);
+        color: var(--muted);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <div class="brand">薪筹 <small>Offerithm · 快速估算</small></div>
+        <p class="hint">不注册、不联网，约 30 秒得到第一版估算。</p>
+      </header>
+
+      <main>
+        <section class="card" aria-labelledby="input-title">
+          <h2 id="input-title">基础输入</h2>
+          <label for="city">工作城市</label>
+          <select id="city">
+            <option>北京</option>
+            <option>上海</option>
+            <option>广州</option>
+            <option>深圳</option>
+            <option>杭州（暂无核实政策）</option>
+          </select>
+          <p class="hint">参保城市默认同工作城市，可在高级配置修改。</p>
+
+          <label>企业类型（仅快捷参数预设）</label>
+          <div class="segmented" role="group" aria-label="企业类型">
+            <button aria-pressed="true">私企</button
+            ><button aria-pressed="false">央国企</button>
+          </div>
+
+          <label>薪资表达方式</label>
+          <div class="segmented" role="group" aria-label="薪资表达方式">
+            <button aria-pressed="true">年薪总包</button>
+            <button aria-pressed="false">月薪 × 发薪月数</button>
+            <button aria-pressed="false">自定义结构</button>
+          </div>
+
+          <div class="row">
+            <div>
+              <label for="amount">年薪总包（元）</label>
+              <input id="amount" inputmode="decimal" value="300000" />
+            </div>
+            <div>
+              <label for="year">入职年度</label>
+              <select id="year">
+                <option>2026</option>
+                <option>2025</option>
+              </select>
+            </div>
+          </div>
+          <p class="hint">
+            总包是对账基准，不会与明细重复相加；明细模式可在保存后补充。
+          </p>
+
+          <button class="primary" type="button">计算估算</button>
+        </section>
+
+        <section class="results" aria-labelledby="result-title">
+          <h2
+            id="result-title"
+            style="
+              margin: 0;
+              font-family: var(--font-display);
+              font-size: var(--text-lg);
+            "
+          >
+            估算结果
+          </h2>
+
+          <div class="warnbox">
+            未找到「杭州
+            2026」已核实政策，已使用全国通用样例估算，整体低置信度。
+          </div>
+
+          <div class="metric">
+            <div class="label">年度税后可用现金</div>
+            <div class="value">¥ 246,120 <span class="tag">估算</span></div>
+            <div class="note">扣除个人五险一金与个税后的年度现金。</div>
+          </div>
+
+          <div class="metric">
+            <div class="label">
+              现金储蓄
+              <span class="tag system-estimate">生活成本·系统估算</span>
+            </div>
+            <div class="value">¥ 118,920</div>
+            <div class="note">
+              = 税后现金 − 年度现金生活成本（样例可修改）。
+            </div>
+          </div>
+
+          <div class="metric">
+            <div class="label">含权益储蓄</div>
+            <div class="value">¥ 154,680</div>
+            <div class="note">
+              = 现金储蓄 + 个人公积金入账；医保个账单列不计入。
+            </div>
+          </div>
+
+          <div class="card assump" style="box-shadow: none">
+            <h2 style="font-size: var(--text-base)">
+              默认假设（可查看、可修改）
+            </h2>
+            <ul style="padding-left: 18px; margin: 0">
+              <li>
+                政策：全国通用样例
+                <span class="tag policy-default">政策默认</span>
+              </li>
+              <li>
+                住房租金扣除：1,500 元/月
+                <span class="tag policy-default">政策默认</span
+                >（按城市档位预填，不代表已核实资格）
+              </li>
+              <li>
+                生活成本：城市档位样例
+                <span class="tag system-estimate">系统估算</span>
+              </li>
+              <li>年终奖计税：单独计税与并入综合所得并列展示差额。</li>
+            </ul>
+          </div>
+
+          <p class="hint">
+            估算不等于工资承诺；来源标签：<span class="tag">已确认</span
+            >=用户填写，<span class="tag policy-default">政策默认</span>，<span
+              class="tag system-estimate"
+              >系统估算</span
+            >。
+          </p>
+        </section>
+      </main>
+
+      <footer>
+        数据仅保存在你的浏览器本地；清除浏览器数据会丢失，可用 Excel
+        全量导出备份。
+      </footer>
+    </div>
+  </body>
+</html>
