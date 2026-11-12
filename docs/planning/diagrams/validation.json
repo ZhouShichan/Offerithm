@@ -1,0 +1,59 @@
+{
+  "mermaid": "11.12.1",
+  "results": [
+    {
+      "file": "02-architecture.md",
+      "diagram": 1,
+      "status": "PASS",
+      "svg": "diagrams/diagram-02-1.svg"
+    },
+    {
+      "file": "02-architecture.md",
+      "diagram": 2,
+      "status": "PASS",
+      "svg": "diagrams/diagram-02-2.svg"
+    },
+    {
+      "file": "02-architecture.md",
+      "diagram": 3,
+      "status": "PASS",
+      "svg": "diagrams/diagram-02-3.svg"
+    },
+    {
+      "file": "02-architecture.md",
+      "diagram": 4,
+      "status": "PASS",
+      "svg": "diagrams/diagram-02-4.svg"
+    },
+    {
+      "file": "02-architecture.md",
+      "diagram": 5,
+      "status": "PASS",
+      "svg": "diagrams/diagram-02-5.svg"
+    },
+    {
+      "file": "02-architecture.md",
+      "diagram": 6,
+      "status": "PASS",
+      "svg": "diagrams/diagram-02-6.svg"
+    },
+    {
+      "file": "02-architecture.md",
+      "diagram": 7,
+      "status": "PASS",
+      "svg": "diagrams/diagram-02-7.svg"
+    },
+    {
+      "file": "02-architecture.md",
+      "diagram": 8,
+      "status": "PASS",
+      "svg": "diagrams/diagram-02-8.svg"
+    },
+    {
+      "file": "03-implementation-plan.md",
+      "diagram": 1,
+      "status": "PASS",
+      "svg": "diagrams/diagram-03-1.svg"
+    }
+  ]
+}

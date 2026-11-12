@@ -1,0 +1,22 @@
+stateDiagram-v2
+  [*] --> Loading
+  Loading --> ListReady: 读取成功
+  Loading --> LoadError: 读取失败
+  LoadError --> Loading: 重试
+  ListReady --> Editing: 新建 编辑 或恢复草稿
+  Editing --> Validating: 保存正式记录
+  Validating --> Editing: 字段错误并保留内容
+  Validating --> Saving: 合法
+  Saving --> SaveError: 事务失败
+  SaveError --> Editing: 保留内容并重试
+  Saving --> Saved: 事务 complete
+  Saved --> Refreshing: 刷新列表
+  Refreshing --> ListReady: 刷新成功
+  Refreshing --> RefreshError: 已保存但读取失败
+  RefreshError --> Refreshing: 重新读取
+  Editing --> DraftSaving: 保存草稿
+  DraftSaving --> DraftReady: 草稿事务 complete
+  DraftSaving --> SaveError: 草稿事务失败
+  DraftReady --> Editing: 恢复草稿
+  DraftReady --> ListReady: 返回列表
+  Editing --> ListReady: 取消且按策略处理未保存内容

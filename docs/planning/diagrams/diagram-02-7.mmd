@@ -1,0 +1,38 @@
+sequenceDiagram
+  actor User as 用户
+  participant UI as 设置与导入预览
+  participant UC as 导入用例
+  participant Pure as 解析迁移校验函数
+  participant Repo as Repository
+  participant DB as IndexedDB 事务
+  User->>UI: 选择 JSON 文件
+  UI->>UC: 文件内容
+  UC->>Pure: parse 识别版本 migrate validate
+  alt 格式或版本不支持
+    Pure-->>UC: 结构化错误
+    UC-->>UI: 显示错误且不写入
+  else 数据有效
+    UC->>Repo: 读取当前已提交记录
+    Repo-->>UC: 记录与基线
+    UC->>Pure: prepareImport
+    Pure-->>UC: 新增 覆盖 冲突计划
+    UC-->>UI: 显示范围 冲突与备份入口
+    User->>UI: 确认导入
+    UI->>UC: commit(plan)
+    UC->>Repo: 重新核对基线并提交批次
+    alt 当前数据已变
+      Repo-->>UC: 冲突需要重新预览
+      UC-->>UI: 不静默覆盖
+    else 基线匹配
+      Repo->>DB: 单事务批量写入
+      alt 全部完成
+        DB-->>Repo: transaction complete
+        Repo-->>UC: 提交结果
+        UC-->>UI: 显示实际新增与覆盖数量
+      else 任一失败
+        DB-->>Repo: abort 全部回滚
+        Repo-->>UC: 错误
+        UC-->>UI: 原记录保持不变并允许重试
+      end
+    end
+  end

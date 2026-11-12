@@ -1,0 +1,83 @@
+classDiagram
+  class Offer {
+    <<interface>>
+    +string id
+    +string name
+    +string companyName
+    +string regionPolicyId
+    +string createdAt
+    +string updatedAt
+  }
+  class SalaryStructure {
+    <<interface>>
+    +number baseMonthly
+    +number annualBonus
+    +string bonusTaxMethod
+  }
+  class SalaryComponent {
+    <<interface>>
+    +string frequency
+    +string amountType
+    +number amount
+    +boolean taxable
+  }
+  class TieredBonusRule {
+    <<interface>>
+  }
+  class ScenarioValues {
+    <<inlineData>>
+    +number raiseRate
+    +number bonusMultiplier
+  }
+  class OneTimePayment {
+    <<inlineData>>
+    +string name
+    +number amount
+    +boolean taxable
+  }
+  class LivingCost {
+    <<interface>>
+  }
+  class WorkIntensity {
+    <<interface>>
+  }
+  class RegionPolicy {
+    <<interface>>
+  }
+  class TaxPolicy {
+    <<interface>>
+  }
+  class OfferCalcResult {
+    <<interface>>
+    +string offerId
+    +number grossAnnualCash
+    +number incomeTaxAnnual
+    +number netAnnualCash
+    +number annualSavings
+    +number effectiveHourlyRate
+    +string[] warnings
+  }
+  class Uncertain {
+    <<interface>>
+    +T value
+    +number confidence
+    +string note
+  }
+  class ComparisonResult {
+    <<interface>>
+    +string offerId
+    +string name
+    +number totalScore
+    +Record criterionScores
+  }
+  Offer "1" *-- "1" SalaryStructure
+  SalaryStructure "1" *-- "*" SalaryComponent
+  SalaryStructure "1" *-- "*" TieredBonusRule
+  Offer "1" *-- "3" ScenarioValues : scenarios
+  Offer "1" *-- "*" OneTimePayment
+  Offer "1" *-- "1" LivingCost
+  Offer "1" *-- "1" WorkIntensity
+  Offer ..> RegionPolicy : regionPolicyId
+  OfferCalcResult "1" *-- "3" Uncertain : projection
+  OfferCalcResult ..> Offer : offerId
+  ComparisonResult ..> Offer : offerId

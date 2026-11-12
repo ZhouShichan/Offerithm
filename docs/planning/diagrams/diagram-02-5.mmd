@@ -1,0 +1,58 @@
+classDiagram
+  class OfferRepository {
+    <<proposedInterface>>
+    +list(kind) Promise
+    +put(kind, offer) Promise
+    +remove(kind, id) Promise
+    +commitImport(plan) Promise
+  }
+  class CalculationContext {
+    <<proposedData>>
+    +number policyYear
+    +string regionPolicyVersion
+    +string taxPolicyVersion
+    +number specialAdditionalDeductions
+    +Record assumptions
+  }
+  class Diagnostic {
+    <<proposedData>>
+    +string code
+    +string path
+    +string message
+    +string severity
+  }
+  class ImportPlan {
+    <<proposedData>>
+    +number additions
+    +number replacements
+    +Record conflicts
+    +string baselineRevision
+  }
+  class OfferCalculation {
+    <<proposedData>>
+    +string offerId
+    +Record cashFlow
+    +Record accountAssets
+    +Record policyReferences
+    +Record assumptions
+  }
+  class DomainFunctions {
+    <<functionModule>>
+    +validateOffer(raw) Outcome
+    +resolveContext(offer, catalog, year) Outcome
+    +calculateOfferPure(offer, context, scenario) Outcome
+    +compareById(entries, weights) Outcome
+  }
+  class ImportFunctions {
+    <<functionModule>>
+    +parseSnapshot(text) Outcome
+    +migrateSnapshot(snapshot) Outcome
+    +prepareImport(snapshot, current) Outcome
+  }
+  DomainFunctions ..> CalculationContext
+  DomainFunctions ..> OfferCalculation
+  DomainFunctions ..> Diagnostic
+  ImportFunctions ..> Diagnostic
+  ImportFunctions ..> ImportPlan
+  OfferRepository ..> ImportPlan
+  OfferCalculation "1" *-- "*" Diagnostic

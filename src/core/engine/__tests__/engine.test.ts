@@ -173,6 +173,51 @@ describe('calculateOffer', () => {
   });
 });
 
+describe('calculateOffer 年度现金组成', () => {
+  it('应税季度奖金同时计入现金与税基', () => {
+    const offer = makeOffer('quarterly', 10000, 40);
+    offer.regionPolicyId = 'missing';
+    offer.salary.annualBonus = 0;
+    offer.salary.bonusTaxMethod = 'combined';
+    offer.salary.components = [{ id: 'q', name: '季度奖金', frequency: 'quarterly', amountType: 'fixed', amount: 3000, countsTowardInsuranceBase: false, taxable: true }];
+    const result = calculateOffer(offer);
+    // 现金 120000 + 3000*4；无缴费，税基 132000-60000，税额 72000*10%-2520。
+    expect(result.grossAnnualCash).toBe(132000);
+    expect(result.incomeTaxAnnual).toBe(4680);
+    expect(result.netAnnualCash).toBe(127320);
+  });
+
+  it.each([
+    ['monthly', 149000],
+    ['quarterly', 141000],
+    ['annual', 138000],
+    ['oneTime', 138000],
+  ] as const)('%s 组件按频率计入现金，情景年奖和外层一次性款各计一次', (frequency, expected) => {
+    const offer = makeOffer('cash', 10000, 40);
+    offer.regionPolicyId = 'missing';
+    offer.salary.bonusTaxMethod = 'combined';
+    offer.salary.components = [{ id: 'c', name: '组件', frequency, amountType: 'fixed', amount: 1000, countsTowardInsuranceBase: false, taxable: true }];
+    offer.oneTimePayments = [{ name: '签字费', amount: 2000, taxable: true }];
+    // 基本工资 120000 + 情景年奖 15000 + 签字费 2000 + 组件年化金额。
+    const result = calculateOffer(offer, { scenario: 'optimistic' });
+    expect(result.grossAnnualCash).toBe(expected);
+    expect(result.employerTotalCostAnnual).toBe(expected);
+  });
+
+  it('免税季度组件计入现金但不进入税基', () => {
+    const offer = makeOffer('exempt', 10000, 40);
+    offer.regionPolicyId = 'missing';
+    offer.salary.annualBonus = 0;
+    offer.salary.bonusTaxMethod = 'combined';
+    offer.salary.components = [{ id: 'c', name: '补贴', frequency: 'quarterly', amountType: 'fixed', amount: 3000, countsTowardInsuranceBase: false, taxable: false }];
+    const result = calculateOffer(offer);
+    // 现金 120000 + 12000；税基 120000 - 60000，税额 60000 * 10% - 2520。
+    expect(result.grossAnnualCash).toBe(132000);
+    expect(result.incomeTaxAnnual).toBe(3480);
+    expect(result.netAnnualCash).toBe(128520);
+  });
+});
+
 describe('compareOffers', () => {
   it('高储蓄 Offer 得分更高（默认权重）', () => {
     const offers = [makeOffer('low', 15000, 50), makeOffer('high', 25000, 40)];

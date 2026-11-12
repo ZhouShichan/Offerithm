@@ -1,0 +1,32 @@
+sequenceDiagram
+  actor User as 用户
+  participant UI as Offer 编辑器
+  participant UC as 保存用例
+  participant V as 共享校验纯函数
+  participant Repo as IndexedDB 适配器
+  participant DB as 浏览器事务
+  User->>UI: 保存当前内容
+  UI->>UC: saveOffer(raw)
+  UC->>V: validateOffer(raw)
+  alt 输入不合法
+    V-->>UC: 字段诊断
+    UC-->>UI: 保留内容并显示错误
+  else 输入合法
+    V-->>UC: 已验证 Offer
+    UC->>Repo: put(offer)
+    Repo->>DB: 开启读写事务并 put
+    DB-->>Repo: request success
+    Note over Repo,DB: 暂存结果，不在这里报告成功
+    alt 事务 complete
+      DB-->>Repo: complete
+      Repo-->>UC: 已提交
+      UC-->>UI: 显示保存成功
+      UC->>Repo: 刷新列表
+      Repo-->>UC: 列表或读取错误
+      UC-->>UI: 更新列表或单独提示读取失败
+    else 事务 abort 或 error
+      DB-->>Repo: abort 或 error
+      Repo-->>UC: 可恢复的保存错误
+      UC-->>UI: 保留内容并允许重试
+    end
+  end

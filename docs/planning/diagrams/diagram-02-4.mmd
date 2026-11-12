@@ -1,0 +1,32 @@
+flowchart LR
+  App[React Router 应用外壳]
+  OfferEditor[OfferEditor 与字段分组]
+  DraftList[DraftList]
+  CompareTable[CompareTable]
+  WeightEditor[WeightEditor]
+  ImportPanel[ImportPanel]
+  Diagnostics[Diagnostics 与 PolicySummary]
+  OfferHook[useOffers 与 useOfferEditor]
+  CompareHook[useComparison]
+  ImportFlow[importWorkspace 用例]
+  Domain[验证 计算 评分 迁移纯函数]
+  Port[OfferRepository 契约]
+  Adapter[IndexedDB 实现]
+  App --> OfferEditor
+  App --> DraftList
+  App --> CompareTable
+  App --> ImportPanel
+  CompareTable --> WeightEditor
+  OfferEditor --> Diagnostics
+  CompareTable --> Diagnostics
+  OfferEditor --> OfferHook
+  DraftList --> OfferHook
+  CompareTable --> CompareHook
+  ImportPanel --> ImportFlow
+  OfferHook --> Domain
+  CompareHook --> Domain
+  ImportFlow --> Domain
+  OfferHook --> Port
+  CompareHook --> Port
+  ImportFlow --> Port
+  Adapter -. 实现 .-> Port

@@ -52,13 +52,13 @@ export function calculateOffer(offer: Offer, options: CalcOptions = {}): OfferCa
     warnings.push('年终奖单独计税按现行优惠政策计算，该政策具有时效性，请确认入职当年仍然有效。');
   }
 
-  const grossAnnualCash = agg.grossMonthly * 12 + bonus + oneTimeTotal;
+  const grossAnnualCash = agg.grossAnnual - agg.annualBonus + bonus + oneTimeTotal;
 
   const netAnnualCash = grossAnnualCash - employeeInsuranceAnnual - tax.totalTax;
   const housingFundAnnual = insurance.housingFundMonthly * 12;
   const medicalAccountAnnual = insurance.medicalAccountMonthly * 12;
 
-  const employerTotalCostAnnual = agg.grossMonthly * 12 + bonus + insurance.employerMonthly * 12 + oneTimeTotal;
+  const employerTotalCostAnnual = grossAnnualCash + insurance.employerMonthly * 12;
 
   const lc = offer.livingCost;
   const livingCostAnnual =

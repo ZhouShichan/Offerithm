@@ -14,7 +14,10 @@
 - **工作强度**：工时、通勤、出差 → 有效时薪
 - **收入预测**：3 年 / 10 年，三档情景（悲观/基准/乐观），附置信度
 - **多 Offer 决策**：自定义权重评分、不确定性提示、比较仪表盘
-- **数据**：草稿、工作区、本地持久化、JSON/CSV（Excel）导入导出
+- **数据**：IndexedDB 本地持久化、Offer JSON 导入导出、比较 CSV（Excel）导出
+
+当前录入界面支持基本薪资、年终奖与地区选择；复杂薪资组件、生活成本、工时等主要已有引擎/模型能力，完整编辑入口仍待补齐。
+草稿目前仅可写入，尚无恢复入口；政策设置当前只读展示内置示例，不提供自定义编辑；CSV 暂不支持导入。
 
 ## 诚实原则
 
@@ -27,11 +30,22 @@
 ## 快速开始
 
 ```bash
-npm install
+npm ci
 npm run dev        # 本地开发
 npm test           # 运行单元测试
 npm run build      # 构建产物（dist/）
 ```
+
+开发环境与 CI 使用 Node.js 20。浏览器回归覆盖比较列对应关系、真实 IndexedDB 事务及根/子路径部署：
+
+```bash
+npx playwright install chromium
+npm run test:e2e
+```
+
+Linux 缺少浏览器系统依赖时可使用 `npx playwright install --with-deps chromium`。
+云环境已有 Chromium 时，设置 `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/usr/bin/chromium` 即可复用。
+测试会自动构建根路径和 `/Offerithm/` 两份产物，启动并关闭专用测试服务；结果位于忽略的 `test-results/`。
 
 ## 部署到 GitHub Pages
 
@@ -40,6 +54,14 @@ npm run build      # 构建产物（dist/）
 3. 推送到 `main` 即自动部署（`.github/workflows/deploy.yml`）
 
 若仓库名不同，请同步修改 `vite.config.ts` 中的 `base` 或构建时设置 `VITE_BASE`。
+
+页面采用 HashRouter，发布后的页面地址形如 `/Offerithm/#/offers`。
+`#` 后的路径由浏览器处理，直接打开或刷新子页无需服务器提供 SPA 回退；Vite 的 `base` 仍负责静态资源路径。
+
+## 开发进度
+
+需求、架构和后续计划见 [开发分析总览](docs/planning/README.md)。
+首批正确性修复及验证记录见 [阶段 0 进展](docs/planning/04-phase0-progress.md)。
 
 ## 项目结构
 

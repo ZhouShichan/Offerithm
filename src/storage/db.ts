@@ -13,6 +13,7 @@ export type StoreName = 'offers' | 'drafts';
 function openDb(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
     const req = indexedDB.open(DB_NAME, DB_VERSION);
+    let blocked = false;
     req.onupgradeneeded = () => {
       const db = req.result;
       if (!db.objectStoreNames.contains('offers')) {
@@ -22,8 +23,20 @@ function openDb(): Promise<IDBDatabase> {
         db.createObjectStore('drafts', { keyPath: 'id' });
       }
     };
-    req.onsuccess = () => resolve(req.result);
-    req.onerror = () => reject(req.error);
+    req.onblocked = () => {
+      blocked = true;
+      reject(new Error('IndexedDB open blocked by another connection.'));
+    };
+    req.onsuccess = () => {
+      const db = req.result;
+      if (blocked) {
+        db.close();
+        return;
+      }
+      db.onversionchange = () => db.close();
+      resolve(db);
+    };
+    req.onerror = () => reject(req.error ?? new Error('IndexedDB open failed.'));
   });
 }
 
@@ -34,11 +47,36 @@ async function withStore<T>(
 ): Promise<T> {
   const db = await openDb();
   return new Promise<T>((resolve, reject) => {
-    const tx = db.transaction(store, mode);
-    const req = fn(tx.objectStore(store));
-    req.onsuccess = () => resolve(req.result as T);
-    req.onerror = () => reject(req.error);
-    tx.oncomplete = () => db.close();
+    let tx: IDBTransaction | undefined;
+    let result: T;
+    let settled = false;
+    const fail = (error: unknown) => {
+      if (settled) return;
+      settled = true;
+      db.close();
+      reject(error);
+    };
+    db.onclose = () => fail(new Error('IndexedDB connection closed unexpectedly.'));
+    try {
+      tx = db.transaction(store, mode);
+      const transaction = tx;
+      transaction.oncomplete = () => {
+        if (settled) return;
+        settled = true;
+        db.close();
+        resolve(result);
+      };
+      transaction.onabort = () => fail(transaction.error ?? new Error('IndexedDB transaction aborted.'));
+      transaction.onerror = () => fail(transaction.error ?? new Error('IndexedDB transaction failed.'));
+      const req = fn(transaction.objectStore(store));
+      req.onsuccess = () => { result = req.result as T; };
+      req.onerror = () => fail(req.error ?? new Error('IndexedDB request failed.'));
+    } catch (error) {
+      if (tx) {
+        try { tx.abort(); } catch { /* Transaction may already be inactive. */ }
+      }
+      fail(error);
+    }
   });
 }
 

@@ -1,0 +1,46 @@
+flowchart TB
+  User[浏览器用户]
+  subgraph View[现状：界面与编排混合]
+    Router[App 与 BrowserRouter]
+    Home[HomePage]
+    Offers[OffersPage 状态与表单]
+    Compare[ComparePage 状态与评分展示]
+    Settings[SettingsPage 文件操作与政策展示]
+    Router --> Home
+    Router --> Offers
+    Router --> Compare
+    Router --> Settings
+  end
+  subgraph Domain[现状：TypeScript 模型与函数式引擎]
+    Types[core/types.ts]
+    Calc[calculateOffer]
+    Salary[工资聚合]
+    Insurance[缴费计算]
+    Tax[年度税额]
+    Rank[compareOffers]
+    Calc --> Salary
+    Calc --> Insurance
+    Calc --> Tax
+  end
+  subgraph Infra[现状：浏览器基础设施与静态政策]
+    DB[storage/db.ts]
+    IDB[(IndexedDB offers 与 drafts)]
+    IO[storage/io.ts JSON 与 CSV]
+    Files[用户文件]
+    Policies[2025 地区与税务示例]
+    DB --> IDB
+    IO --> Files
+  end
+  User --> Router
+  Offers --> Calc
+  Compare --> Calc
+  Compare --> Rank
+  Offers --> DB
+  Compare --> DB
+  Settings --> DB
+  Settings --> IO
+  Compare --> IO
+  Settings --> Policies
+  Calc --> Policies
+  Types -. 类型约束 .-> Calc
+  Types -. 类型约束 .-> DB

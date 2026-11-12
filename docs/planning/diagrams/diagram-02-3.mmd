@@ -1,0 +1,28 @@
+flowchart TB
+  subgraph UI[建议：界面层]
+    direction LR
+    Forms[Offer 表单与草稿]
+    Views[比较表与结果解释]
+    ImportView[导入预览与诊断]
+  end
+  subgraph Application[建议：应用层]
+    direction LR
+    OfferUseCase[保存 恢复 删除 hooks]
+    CompareUseCase[计算与比较用例]
+    ImportUseCase[导入用例与冲突处理]
+  end
+  subgraph Core[建议：领域层 无 IO]
+    direction LR
+    Validate[共享校验与快照迁移]
+    Context[显式政策与假设上下文]
+    Engine[纯函数工资 缴费 税费 预测 评分]
+  end
+  subgraph Adapters[建议：基础设施适配器]
+    direction LR
+    Repository[Repository 与 IndexedDB]
+    Catalog[政策目录与版本来源]
+    Browser[文件 时间 UUID]
+  end
+  UI --> Application
+  Application --> Core
+  Application --> Adapters

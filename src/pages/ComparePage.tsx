@@ -24,6 +24,7 @@ export default function ComparePage() {
 
   const results = offers.map((o) => calculateOffer(o, { scenario }));
   const ranked = compareOffers(offers, results, weights);
+  const scoresByOfferId = new Map(ranked.map((comparison) => [comparison.offerId, comparison.totalScore]));
 
   const exportCsv = () => {
     const rows = results.map((r, i) => ({
@@ -98,16 +99,19 @@ export default function ComparePage() {
                 ))}
                 <tr className="border-t border-slate-200 dark:border-slate-700">
                   <td className="p-2 font-semibold">综合得分</td>
-                  {ranked.map((c) => (
-                    <td key={c.offerId} className="p-2">
-                      <div className="flex items-center gap-2">
-                        <div className="h-2 flex-1 rounded bg-slate-200 dark:bg-slate-700">
-                          <div className="h-2 rounded bg-emerald-500" style={{ width: `${c.totalScore}%` }} />
+                  {offers.map((o) => {
+                    const score = scoresByOfferId.get(o.id) ?? 0;
+                    return (
+                      <td key={o.id} className="p-2">
+                        <div className="flex items-center gap-2">
+                          <div className="h-2 flex-1 rounded bg-slate-200 dark:bg-slate-700">
+                            <div className="h-2 rounded bg-emerald-500" style={{ width: `${score}%` }} />
+                          </div>
+                          <span className="font-semibold">{score}</span>
                         </div>
-                        <span className="font-semibold">{c.totalScore}</span>
-                      </div>
-                    </td>
-                  ))}
+                      </td>
+                    );
+                  })}
                 </tr>
               </tbody>
             </table>
