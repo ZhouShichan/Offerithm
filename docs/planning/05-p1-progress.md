@@ -97,3 +97,7 @@ PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/usr/bin/chromium npm run test:e2e
 用户已在后续会话明确授权提交、推送并部署；上文“不提交/推送/部署”为 11 月 12 日实现批次的历史边界。本次重新 fetch 确认远端 main 仍为 `b49304b`，并在 Node 20.20.2 下重新通过类型检查、Lint、42 项单元测试、20 项 Chromium 回归（18.4 秒）及根/子路径生产构建。
 
 提交推送至 main 后，由既有 `Deploy to GitHub Pages` 工作流部署，不修改部署配置。最终提交、CI 和线上验收结果以本次发布的 GitHub Actions 记录及交付说明为准；本段仅记录发布前检查，不预先声明部署成功。
+
+首次发布提交 `ad62a60` 已推送，Pages 的 build/deploy 均成功：[部署记录](https://github.com/ZhouShichan/Offerithm/actions/runs/43814452905)。CI 常规检查通过，browser job 在安装浏览器前失败：`ubuntu-latest` 已采用 Ubuntu 26.04，而锁定的 Playwright 1.56.1 不支持该系统；浏览器测试并未执行。以该远端失败作为回归证据，仅将 browser job 固定到受支持的 `ubuntu-24.04`，不升级依赖、不改变应用或部署配置，后续推送重新验证远端 CI。
+
+当前云环境代理拒绝直连 `zhoushichan.github.io`（CONNECT 403），因此工作流部署成功与页面直连验收分别记录，不声称已完成线上页面交互验收。
