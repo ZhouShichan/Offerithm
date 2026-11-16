@@ -67,3 +67,22 @@ test('a synchronous invalid-key error rejects without blocking later writes', as
   }, makeOffer('retry'));
   expect(outcome).toEqual({ rejected: true, stored: makeOffer('retry') });
 });
+test('saving clears draft atomically and import detects intervening writes', async ({ page }) => {
+  await page.goto('/');
+  const result = await page.evaluate(async (offer) => {
+    const path = '/src/storage/db.ts';
+    const { offerStore, draftStore, prepareImport, commitImport } = await import(path);
+    await draftStore.put(offer);
+    await offerStore.save(offer);
+    const draft = await draftStore.get(offer.id);
+    const incoming = { ...offer, name: 'imported' };
+    const preview = await prepareImport([incoming]);
+    await offerStore.put({ ...offer, name: 'changed' });
+    let rejected = false;
+    try { await commitImport(preview); } catch { rejected = true; }
+    return { draft, rejected, stored: await offerStore.get(offer.id) };
+  }, makeOffer('p1'));
+  expect(result.draft).toBeUndefined();
+  expect(result.rejected).toBe(true);
+  expect(result.stored.name).toBe('changed');
+});

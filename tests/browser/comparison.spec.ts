@@ -11,7 +11,9 @@ test('scores stay with their Offer when ranking opposes the table column order',
       offers: [makeOffer('a', 10000), makeOffer('b', 20000)],
     })),
   });
-  await expect(page.getByText('已导入 2 个 Offer。', { exact: true })).toBeVisible();
+  await expect(page.getByRole('dialog', { name: '导入预览' })).toContainText('新增 2');
+  await page.getByRole('button', { name: '确认导入' }).click();
+  await expect(page.getByText('已导入 2 个，覆盖 0 个')).toBeVisible();
   await page.getByRole('link', { name: '比较', exact: true }).click();
   const sliders = page.locator('input[type=range]');
   await expect(sliders).toHaveCount(6);

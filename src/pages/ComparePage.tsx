@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import type { ComparisonWeights, Offer, ScenarioKey } from '../core/types';
 import { calculateOffer } from '../core/engine';
 import { compareOffers, defaultWeights, criterionLabels } from '../core/engine/compare';
+import { validateOffer, type ValidationIssue } from '../core/validation';
 import { offerStore } from '../storage/db';
 import { offersToCsv, download } from '../storage/io';
 
@@ -12,6 +13,7 @@ const scenarioLabels: Record<ScenarioKey, string> = {
   base: '基准',
   optimistic: '乐观',
 };
+const describeIssues = (issues: ValidationIssue[]) => issues.map((issue) => `${issue.path || 'Offer'}：${issue.message}`).join('；');
 
 export default function ComparePage() {
   const [offers, setOffers] = useState<Offer[]>([]);
@@ -22,13 +24,16 @@ export default function ComparePage() {
     void offerStore.list().then(setOffers);
   }, []);
 
-  const results = offers.map((o) => calculateOffer(o, { scenario }));
-  const ranked = compareOffers(offers, results, weights);
+  const diagnosed = offers.map((offer) => ({ offer, issues: validateOffer(offer) }));
+  const validOffers = diagnosed.filter((row) => row.issues.length === 0).map((row) => row.offer);
+  const invalidOffers = diagnosed.filter((row) => row.issues.length > 0);
+  const results = validOffers.map((o) => calculateOffer(o, { scenario }));
+  const ranked = compareOffers(validOffers, results, weights);
   const scoresByOfferId = new Map(ranked.map((comparison) => [comparison.offerId, comparison.totalScore]));
 
   const exportCsv = () => {
     const rows = results.map((r, i) => ({
-      offer: offers[i]!,
+      offer: validOffers[i]!,
       summary: r as unknown as Record<string, number | string>,
     }));
     download('offerithm-compare.csv', offersToCsv(rows), 'text/csv');
@@ -45,6 +50,8 @@ export default function ComparePage() {
 
       {offers.length === 0 ? (
         <p className="text-sm text-slate-500">请先在「我的 Offer」中保存至少一个 Offer。</p>
+      ) : validOffers.length === 0 ? (
+        <p className="text-sm text-slate-500">目前没有可比较的有效 Offer，请先修复下方记录。</p>
       ) : (
         <>
           <div className="flex flex-wrap items-center gap-2 text-sm">
@@ -76,7 +83,7 @@ export default function ComparePage() {
               <thead className="bg-slate-100 text-left dark:bg-slate-800">
                 <tr>
                   <th className="p-2">指标</th>
-                  {offers.map((o) => <th key={o.id} className="p-2">{o.name}</th>)}
+                  {validOffers.map((o) => <th key={o.id} className="p-2">{typeof o.name === 'string' ? o.name : '无效名称'}</th>)}
                 </tr>
               </thead>
               <tbody>
@@ -99,7 +106,7 @@ export default function ComparePage() {
                 ))}
                 <tr className="border-t border-slate-200 dark:border-slate-700">
                   <td className="p-2 font-semibold">综合得分</td>
-                  {offers.map((o) => {
+                  {validOffers.map((o) => {
                     const score = scoresByOfferId.get(o.id) ?? 0;
                     return (
                       <td key={o.id} className="p-2">
@@ -122,6 +129,15 @@ export default function ComparePage() {
           </p>
         </>
       )}
+
+      {invalidOffers.length > 0 && <section aria-label="排除的 Offer" className="rounded-xl border border-amber-300 p-4 text-sm dark:border-amber-900">
+        <h2 className="font-semibold text-amber-800 dark:text-amber-300">以下记录未参与比较，需修复后再使用</h2>
+        <ul className="mt-2 list-disc space-y-1 pl-5">{invalidOffers.map(({ offer, issues }, index) => (
+          <li key={typeof offer?.id === 'string' ? offer.id : `invalid-${index}`}>
+            {typeof offer?.name === 'string' ? offer.name : '无效名称'}：{describeIssues(issues)}
+          </li>
+        ))}</ul>
+      </section>}
     </div>
   );
 }

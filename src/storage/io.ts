@@ -1,4 +1,5 @@
 import type { Offer } from '../core/types';
+import { isIsoDateTime, validateOffer } from '../core/validation';
 
 /**
  * 导入导出：JSON 全量 + CSV（Excel 可直接打开）。
@@ -16,12 +17,25 @@ export function toJson(snapshot: WorkspaceSnapshot): string {
   return JSON.stringify(snapshot, null, 2);
 }
 
+export const MAX_IMPORT_BYTES = 5 * 1024 * 1024;
+export const MAX_IMPORT_OFFERS = 1000;
+
 export function fromJson(text: string): WorkspaceSnapshot {
-  const data = JSON.parse(text) as WorkspaceSnapshot;
-  if (data.app !== 'offerithm' || !Array.isArray(data.offers)) {
-    throw new Error('文件格式不正确：缺少 app/offerithm 与 offers 字段。');
+  if (new TextEncoder().encode(text).byteLength > MAX_IMPORT_BYTES) throw new Error('文件大小超过 5 MiB 限制。');
+  const data: unknown = JSON.parse(text);
+  if (typeof data !== 'object' || data === null || !('app' in data) || data.app !== 'offerithm' || !('version' in data) || data.version !== 1 || !('offers' in data) || !Array.isArray(data.offers) || !('exportedAt' in data) || !isIsoDateTime(data.exportedAt)) {
+    throw new Error('文件格式或版本不正确。');
   }
-  return data;
+  if (data.offers.length > MAX_IMPORT_OFFERS) throw new Error('Offer 数量超过 1000 条限制。');
+  const ids = new Set<string>();
+  for (const [index, offer] of data.offers.entries()) {
+    const issues = validateOffer(offer);
+    if (issues.length) throw new Error(`Offer ${index + 1}: ${issues.map(i => `${i.path}: ${i.message}`).join('；')}`);
+    const id = (offer as Offer).id;
+    if (ids.has(id)) throw new Error(`重复的 Offer ID: ${id}`);
+    ids.add(id);
+  }
+  return data as WorkspaceSnapshot;
 }
 
 export function download(filename: string, content: string, mime: string): void {

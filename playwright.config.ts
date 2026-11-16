@@ -15,7 +15,7 @@ export default defineConfig({
   projects: [
     {
       name: 'pages',
-      testMatch: ['routing.spec.ts', 'comparison.spec.ts'],
+      testMatch: ['routing.spec.ts', 'comparison.spec.ts', 'offer-flows.spec.ts'],
       use: { baseURL: 'http://127.0.0.1:4273/Offerithm/' },
     },
     {
@@ -25,7 +25,7 @@ export default defineConfig({
     },
     {
       name: 'storage',
-      testMatch: 'transactions.spec.ts',
+      testMatch: ['transactions.spec.ts', 'p1-review.spec.ts', 'import-review.spec.ts'],
       use: { baseURL: 'http://127.0.0.1:5273/' },
     },
   ],
